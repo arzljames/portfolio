@@ -10,7 +10,7 @@ function App() {
       <AnimatePresence>
         <Router>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/portfolio" element={<Home />} />
             <Route path="/*" element={<PageNotFound />} />
           </Routes>
         </Router>
