@@ -11,7 +11,7 @@ const PageNotFound = () => {
         <h1>404 </h1>
         <h2>Page not found</h2>
         <p>Sorry we couldn't find the page you are looking for</p>
-        <div className="back-btn" onClick={() => navigate("/")}>
+        <div className="back-btn" onClick={() => navigate("/portfolio")}>
           <BsArrowLeft size={18} /> Portfolio
         </div>
       </div>
