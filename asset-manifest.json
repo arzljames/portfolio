@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/portfolio/static/css/main.7292f51c.css",
+    "main.js": "/portfolio/static/js/main.1b818461.js",
+    "static/media/404.jpg": "/portfolio/static/media/404.39f392950424f66affef.jpg",
+    "static/media/ProjectB3.jpg": "/portfolio/static/media/ProjectB3.03b3f765d49042eaa0b3.jpg",
+    "static/media/ProjectB2.jpg": "/portfolio/static/media/ProjectB2.edfa84266f1f416af833.jpg",
+    "static/media/project1.png": "/portfolio/static/media/project1.fdb8dfec97a8e253a4eb.png",
+    "static/media/projectA1.png": "/portfolio/static/media/projectA1.fdb8dfec97a8e253a4eb.png",
+    "static/media/ProjectB4.jpg": "/portfolio/static/media/ProjectB4.4af36a504fca3ee405fb.jpg",
+    "static/media/ProjectA3.png": "/portfolio/static/media/ProjectA3.28d828edf6a5770984ed.png",
+    "static/media/ProjectB1.png": "/portfolio/static/media/ProjectB1.028c3ad5efef1fb92fce.png",
+    "static/media/project2.png": "/portfolio/static/media/project2.028c3ad5efef1fb92fce.png",
+    "static/media/ProjectB9.jpg": "/portfolio/static/media/ProjectB9.8af5c7d510195a9156b7.jpg",
+    "static/media/me.jpg": "/portfolio/static/media/me.215e8180311e3d9bbd81.jpg",
+    "static/media/ProjectB5.jpg": "/portfolio/static/media/ProjectB5.923f990da5ee2269c8b5.jpg",
+    "static/media/ProjectB6.jpg": "/portfolio/static/media/ProjectB6.ad3cecd6d76fca3afa48.jpg",
+    "static/media/ProjectB7.jpg": "/portfolio/static/media/ProjectB7.f813eb2602d4b7e4448f.jpg",
+    "static/media/ProjectB8.jpg": "/portfolio/static/media/ProjectB8.fcf92565d3c5f78ca0c4.jpg",
+    "static/media/ProjectA2.png": "/portfolio/static/media/ProjectA2.5a3c7db6ecb17608198d.png",
+    "static/media/ProjectA5.png": "/portfolio/static/media/ProjectA5.ab335fd13e9a62c309d0.png",
+    "static/media/ProjectA4.png": "/portfolio/static/media/ProjectA4.3a4b8d7a20fc444dfb1d.png",
+    "static/media/ProjectA6.png": "/portfolio/static/media/ProjectA6.5b7e9262c436558cba97.png",
+    "static/media/ProjectA7.png": "/portfolio/static/media/ProjectA7.759ccd25e9543609b312.png",
+    "index.html": "/portfolio/index.html",
+    "main.7292f51c.css.map": "/portfolio/static/css/main.7292f51c.css.map",
+    "main.1b818461.js.map": "/portfolio/static/js/main.1b818461.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7292f51c.css",
+    "static/js/main.1b818461.js"
+  ]
+}
