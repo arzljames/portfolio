@@ -1,0 +1,46 @@
+.navbar-container {
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: transparent;
+  z-index: 4;
+}
+
+.navbar {
+  width: 90%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: transparent;
+  color: #fff;
+}
+
+.navbar div {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background: transparent;
+}
+
+.navbar p {
+  font-weight: 500;
+  margin-right: 10px;
+  font-size: 14px;
+  background: transparent;
+}
+
+.navbar .menu {
+  padding: 10px 10px;
+  border-radius: 4px;
+  transition: 0.2s ease-in-out;
+}
+
+.navbar .menu:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transition: 0.2s ease-in-out;
+  color: #49deff;
+}

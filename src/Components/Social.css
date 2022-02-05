@@ -1,0 +1,109 @@
+.social-container {
+  width: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: auto;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  z-index: 2;
+  user-select: none;
+}
+
+.social-wrapper {
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 4;
+}
+
+.social-container .social-icons {
+  width: auto;
+  min-height: 100px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.social-icons p {
+  cursor: pointer;
+  color: #cbcbcb;
+  margin-bottom: 20px;
+  font-size: 22px;
+  position: relative;
+  transition: 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  border-radius: 100px;
+  padding: 5px 0px;
+  border: 1px solid rgba(255, 0, 0, 0);
+  z-index: 4;
+}
+
+.fb-icon:hover {
+  width: auto;
+  height: 100%;
+  background: #191b20;
+  padding: 5px 10px;
+  color: #0572e6;
+  border: 1px solid #0572e6;
+}
+.ig-icon:hover {
+  width: auto;
+  height: 100%;
+  background: #191b20;
+  padding: 5px 10px;
+  color: #e12e3e;
+  border: 1px solid #e12e3e;
+}
+
+.github-icon:hover {
+  width: auto;
+  height: 100%;
+  background: #191b20;
+  padding: 5px 10px;
+  color: #4d5fff;
+  border: 1px solid #4d5fff;
+}
+
+.linkedin-icon:hover {
+  width: auto;
+  height: 100%;
+
+  background: #191b20;
+  padding: 5px 10px;
+  color: #0a66c2;
+  border: 1px solid #0a66c2;
+}
+
+.social-fb,
+.social-github,
+.social-linkedin,
+.social-ig {
+  display: none;
+}
+
+.social-icons p:hover > .social-fb,
+.social-icons p:hover > .social-github,
+.social-icons p:hover > .social-linkedin,
+.social-icons p:hover > .social-ig {
+  display: block;
+  margin-left: 5px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 300;
+  text-decoration: none;
+  transition: 0.2s ease-in-out;
+}
+
+@media screen and (max-width: 768px) {
+  .social-container {
+    display: none;
+  }
+}
