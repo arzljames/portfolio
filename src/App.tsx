@@ -3,12 +3,20 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "./assets/vite.svg";
 import heroImg from "./assets/hero.png";
 import "./App.css";
+import Navbar from "./components/Navbar";
 
 function App() {
   const [count, setCount] = useState(0);
+  const [dark, setDark] = useState<boolean>(true);
+
+  const navbarProps = {
+    dark,
+    setDark,
+  };
 
   return (
     <>
+      <Navbar {...navbarProps} />
       <section id="center">
         <div className="hero">
           <img src={heroImg} className="base" width="170" height="179" alt="" />
