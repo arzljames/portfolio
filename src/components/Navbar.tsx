@@ -1,6 +1,6 @@
 import { NAVIGATION_LINKS } from "@/constant";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Moon, Sun } from "@hugeicons/core-free-icons";
+import { Menu09Icon, Moon02Icon, Sun, X } from "@hugeicons/core-free-icons";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 type Props = {
@@ -43,12 +43,12 @@ function Navbar({ setDark, dark }: Props) {
           ))}
           <button
             onClick={() => setDark(!dark)}
-            className="w-9 h-9 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+            className="w-9 h-9 rounded-full cursor-pointer glass flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
           >
             {dark ? (
               <HugeiconsIcon icon={Sun} strokeWidth={1.8} />
             ) : (
-              <HugeiconsIcon icon={Moon} strokeWidth={1.8} />
+              <HugeiconsIcon icon={Moon02Icon} strokeWidth={1.8} />
             )}
           </button>
           <a
@@ -58,6 +58,30 @@ function Navbar({ setDark, dark }: Props) {
             Let's talk{" "}
             <span className="w-1.5 h-1.5 rounded-full bg-primary-foreground/60 inline-block" />
           </a>
+        </div>
+
+        {/* Mobile */}
+        <div className="md:hidden flex items-center gap-3">
+          <button
+            onClick={() => setDark(!dark)}
+            className="w-9 h-9 rounded-full glass flex items-center justify-center text-muted-foreground"
+          >
+            {dark ? (
+              <HugeiconsIcon icon={Sun} strokeWidth={1.8} />
+            ) : (
+              <HugeiconsIcon icon={Moon02Icon} strokeWidth={1.8} />
+            )}
+          </button>
+          <button
+            className="text-foreground"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? (
+              <HugeiconsIcon icon={X} strokeWidth={1.8} />
+            ) : (
+              <HugeiconsIcon icon={Menu09Icon} strokeWidth={1.8} />
+            )}
+          </button>
         </div>
       </div>
     </nav>
