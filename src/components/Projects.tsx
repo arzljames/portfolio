@@ -11,7 +11,7 @@ function meta(project: Project) {
 
 function FeaturedProject({ project }: { project: Project }) {
   return (
-    <Link to={`/projects/${project.slug}`} className="group block">
+    <Link to={`/projects/${project.slug}`} data-cursor="View" className="group block">
       <div className="relative aspect-[16/10] overflow-hidden rounded-3xl border border-line bg-surface-2 sm:aspect-[16/7]">
         <ProjectVisual project={project} />
         <div className="absolute top-4 left-4 flex gap-2">
@@ -42,7 +42,7 @@ function FeaturedProject({ project }: { project: Project }) {
 
 function CompactProject({ project }: { project: Project }) {
   return (
-    <Link to={`/projects/${project.slug}`} className="group block">
+    <Link to={`/projects/${project.slug}`} data-cursor="View" className="group block">
       <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line bg-surface-2">
         <ProjectVisual project={project} />
         <div className="absolute top-4 left-4">
@@ -65,6 +65,7 @@ export function ProjectCard({ project }: { project: Project }) {
   return (
     <Link
       to={`/projects/${project.slug}`}
+      data-cursor="View"
       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-colors hover:border-line-strong"
     >
       <div className="relative aspect-[16/9] overflow-hidden bg-surface-2">

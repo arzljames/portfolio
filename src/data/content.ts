@@ -24,16 +24,16 @@ export interface Project {
 }
 
 export const profile = {
-  name: "John Doe",
-  shortName: "J.Doe",
-  role: "Frontend Developer",
-  tagline: "Frontend dev. Fullstack capable. Design-driven.",
-  disciplines: ["Frontend", "Fullstack", "Design Enthusiast"],
+  name: "Arzl James",
+  shortName: "A.James",
+  role: "Fullstack Developer",
+  tagline: "Fullstack dev. UI/UX driven. Shipping with agentic AI.",
+  disciplines: ["Fullstack", "UI/UX", "Agentic AI"],
   available: true,
   /** Optional portrait in /public, e.g. "/portrait.jpg". */
-  portrait: undefined as string | undefined,
-  email: "hello@johndoe.com",
-  location: "San Francisco, CA",
+  portrait: "/portrait.jpg" as string | undefined,
+  email: "arzljames15@gmail.com",
+  location: "Zamboanga City, Philippines",
   responseTime: "24h",
   socials: [
     { label: "GitHub", href: "https://github.com/" },
@@ -45,32 +45,33 @@ export const profile = {
 
 export const about = {
   paragraphs: [
-    "I'm a web developer with a strong focus on frontend — crafting responsive, performant interfaces with React and TypeScript. I've got a solid backend background too, so I'm comfortable going fullstack when the project calls for it.",
-    "Design isn't my job title, but it's something I genuinely love. I bring a designer's eye to everything I build — caring about spacing, typography, and the feel of an interface, not just whether it works.",
+    "I'm a fullstack web developer with 5 years of experience across both sides of the stack — from responsive, performant interfaces in React and TypeScript to APIs, databases, and real-time services with Node.js and NestJS.",
+    "I genuinely love designing things, so I bring a UI/UX mindset to everything I build — caring about spacing, typography, and how an interface feels, not just whether it works. Today I pair that with agentic AI workflows to plan, build, and ship faster without cutting corners.",
   ],
   stats: [
-    { value: "FE", label: "Primary" },
-    { value: "BE", label: "Background" },
-    { value: "UI", label: "Enthusiast" },
+    { value: "5+", label: "Years" },
+    { value: "FS", label: "Fullstack" },
+    { value: "UX", label: "Design" },
+    { value: "AI", label: "Agentic" },
   ],
   services: [
     {
-      icon: "code",
-      title: "Frontend Development",
+      icon: "globe",
+      title: "Fullstack Development",
       description:
-        "React, TypeScript, Next.js — building fast, accessible, pixel-perfect UIs",
+        "React, TypeScript, Node.js, NestJS, databases — end-to-end products from UI to API",
     },
     {
-      icon: "globe",
-      title: "Fullstack",
+      icon: "code",
+      title: "Frontend Engineering",
       description:
-        "Node.js, REST APIs, databases — end-to-end when the project demands it",
+        "Fast, accessible, pixel-perfect interfaces for web and mobile with React and React Native",
     },
     {
       icon: "sparkles",
-      title: "AI-Assisted Development",
+      title: "Agentic AI Workflows",
       description:
-        "Leveraging AI tools to ship faster — smarter scaffolding, code review, and problem-solving",
+        "Building with AI agents in the loop — planning, scaffolding, reviewing, and shipping faster",
     },
     {
       icon: "bolt",
@@ -80,27 +81,47 @@ export const about = {
     },
     {
       icon: "palette",
-      title: "Design Enthusiasm",
+      title: "UI/UX Design",
       description:
-        "Not a pro designer, but deeply care about layout, typography, and visual craft",
+        "Designing intuitive flows and polished interfaces — layout, typography, and visual craft",
     },
   ] satisfies { icon: IconName; title: string; description: string }[],
 };
 
-export const experience = [
+export interface Job {
+  role: string;
+  company: string;
+  /** Optional company logo in /public, e.g. "/logos/zeniark.png"; the initial renders otherwise. */
+  logo?: string;
+  location: string;
+  period: string;
+  current?: boolean;
+  description: string;
+  tags: string[];
+}
+
+export const experience: Job[] = [
   {
     role: "Fullstack Web Developer",
     company: "Content.one",
+    logo: "/logos/content-one.png",
     location: "Remote · San Francisco, CA",
     period: "Sep 2023 — Present",
     current: true,
     description:
       "Building and maintaining a CMS application built around their core product, Zesty CMS. The app is integrated with Zesty APIs and built with React Native, tailored specifically for The Salvation Army Corps. Also handling customer support alongside development.",
-    tags: ["React Native", "Zesty CMS", "REST APIs", "Customer Support"],
+    tags: [
+      "React",
+      "React Native",
+      "Zesty CMS",
+      "REST APIs",
+      "Customer Support",
+    ],
   },
   {
     role: "Backend Developer",
     company: "Zeniark",
+    logo: "/logos/zeniark.png",
     location: "Remote · Philippines",
     period: "Aug 2022 — Sep 2023",
     description:
@@ -110,8 +131,19 @@ export const experience = [
   {
     role: "Fullstack Developer",
     company: "ZCMC",
+    logo: "/logos/zcmc.png",
     location: "Zamboanga City, Philippines",
     period: "Jun 2022 — Aug 2022",
+    description:
+      "Developed a telemedicine application for a local hospital, enabling remote healthcare services. Built end-to-end using React, Node.js, Express, and MongoDB.",
+    tags: ["React", "Node.js", "Express", "MongoDB"],
+  },
+  {
+    role: "Frontend/SEO Intern",
+    company: "Digitalroom Inc.",
+    logo: "/logos/digitalroom.png",
+    location: "Remote · Philippines",
+    period: "Sep 2021 — Mar 2022",
     description:
       "Developed a telemedicine application for a local hospital, enabling remote healthcare services. Built end-to-end using React, Node.js, Express, and MongoDB.",
     tags: ["React", "Node.js", "Express", "MongoDB"],

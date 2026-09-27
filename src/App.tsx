@@ -1,6 +1,7 @@
 import { MotionConfig } from "framer-motion";
 import { useEffect } from "react";
 import { createBrowserRouter, Outlet, RouterProvider, useLocation } from "react-router";
+import { Cursor } from "./components/Cursor";
 import { Footer } from "./components/Footer";
 import { HomePage } from "./pages/HomePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
@@ -29,6 +30,7 @@ function Layout() {
     <MotionConfig reducedMotion="user">
       <Outlet />
       <Footer />
+      <Cursor />
     </MotionConfig>
   );
 }
