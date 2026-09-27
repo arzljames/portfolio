@@ -42,9 +42,42 @@ export function TalkButton({ className = "" }: { className?: string }) {
   );
 }
 
+/** The nav section currently under the upper third of the viewport, or null above the first one. */
+function useActiveSection(ids: string[]) {
+  const [active, setActive] = useState<string | null>(null);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const line = window.innerHeight / 3;
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      let current: string | null = atBottom ? ids[ids.length - 1] : null;
+      if (!atBottom) {
+        for (const id of ids) {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= line) current = id;
+        }
+      }
+      setActive(current);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [ids]);
+
+  return active;
+}
+
+const sectionIds = navLinks.map((link) => link.id);
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const active = useActiveSection(sectionIds);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -78,9 +111,19 @@ export function Navbar() {
                 <li key={link.id}>
                   <Link
                     to={`/#${link.id}`}
-                    className="text-sm text-muted transition-colors hover:text-fg"
+                    aria-current={active === link.id ? "location" : undefined}
+                    className={`relative py-1 text-sm transition-colors hover:text-fg ${
+                      active === link.id ? "text-fg" : "text-muted"
+                    }`}
                   >
                     {link.label}
+                    {active === link.id && (
+                      <motion.span
+                        layoutId="nav-active"
+                        className="absolute inset-x-0 -bottom-1 mx-auto h-0.5 w-4 rounded-full bg-accent"
+                        transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                      />
+                    )}
                   </Link>
                 </li>
               ))}
@@ -120,7 +163,10 @@ export function Navbar() {
                     <Link
                       to={`/#${link.id}`}
                       onClick={() => setOpen(false)}
-                      className="block rounded-xl px-3 py-3 font-display text-2xl font-bold tracking-tight text-fg hover:bg-surface-2"
+                      aria-current={active === link.id ? "location" : undefined}
+                      className={`block rounded-xl px-3 py-3 font-display text-2xl font-bold tracking-tight hover:bg-surface-2 ${
+                        active === link.id ? "bg-surface-2 text-accent" : "text-fg"
+                      }`}
                     >
                       {link.label}
                     </Link>

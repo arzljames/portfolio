@@ -74,6 +74,16 @@
     color: #fff;
   }
 
+  /* Hide the native pointer while the custom cursor is active (fine pointers only). */
+  .custom-cursor,
+  .custom-cursor * {
+    cursor: none !important;
+  }
+
+  .custom-cursor :is(input, textarea, [contenteditable="true"]) {
+    cursor: text !important;
+  }
+
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;

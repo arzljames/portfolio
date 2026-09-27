@@ -48,7 +48,23 @@ export function Experience() {
                         </span>
                       )}
                     </div>
-                    <p className="mt-1 font-semibold text-accent">{job.company}</p>
+                    <p className="mt-2 flex items-center gap-2 font-semibold text-accent">
+                      {job.logo ? (
+                        <img
+                          src={job.logo}
+                          alt=""
+                          className="size-6 shrink-0 object-contain"
+                        />
+                      ) : (
+                        <span
+                          className="grid size-6 shrink-0 place-items-center rounded-md bg-surface text-[11px] font-bold text-muted"
+                          aria-hidden="true"
+                        >
+                          {job.company[0]}
+                        </span>
+                      )}
+                      {job.company}
+                    </p>
                     <p className="mt-0.5 text-xs text-faint">{job.location}</p>
                     <p className="mt-4 text-[15px] leading-relaxed text-muted">
                       {job.description}

@@ -12,7 +12,7 @@ function Portrait() {
       initial={{ opacity: 0, y: 30, rotate: 2 }}
       animate={{ opacity: 1, y: 0, rotate: 0 }}
       transition={{ duration: 0.9, delay: 0.35, ease }}
-      className="relative w-56 shrink-0 sm:w-60"
+      className="relative w-56 shrink-0 sm:w-60 lg:w-72 xl:w-80"
     >
       {/* Stacked card behind the portrait */}
       <div
@@ -24,7 +24,7 @@ function Portrait() {
           <img
             src={profile.portrait}
             alt={profile.name}
-            className="aspect-[7/8] w-full object-cover"
+            className="aspect-[7/8] w-full object-cover object-top grayscale transition-[filter] duration-500 hover:grayscale-0"
           />
         ) : (
           <div className="grid aspect-[7/8] w-full place-items-center bg-[radial-gradient(circle_at_50%_35%,var(--accent-soft),transparent_60%),linear-gradient(160deg,var(--surface-2),var(--surface))]">
@@ -55,7 +55,7 @@ export function Hero() {
           aria-hidden="true"
         />
         <div
-          className="pointer-events-none absolute inset-y-0 right-[21rem] hidden w-px bg-line lg:block"
+          className="pointer-events-none absolute inset-y-0 right-[21rem] hidden w-px bg-line lg:block xl:right-[25rem]"
           aria-hidden="true"
         />
 
@@ -123,7 +123,7 @@ export function Hero() {
             </motion.div>
           </div>
 
-          <div className="hidden w-80 shrink-0 justify-center lg:flex">
+          <div className="hidden w-80 shrink-0 justify-center lg:flex xl:w-96">
             <Portrait />
           </div>
         </div>

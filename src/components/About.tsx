@@ -31,7 +31,7 @@ export function About() {
           </Reveal>
 
           <Reveal delay={0.15}>
-            <dl className="mt-10 grid grid-cols-3 border-t border-line pt-8">
+            <dl className="mt-10 grid grid-cols-2 gap-y-8 border-t border-line pt-8 sm:grid-cols-4">
               {about.stats.map((stat) => (
                 <div key={stat.value} className="flex flex-col-reverse gap-1">
                   <dt className="text-xs font-semibold tracking-[0.2em] text-muted uppercase">
