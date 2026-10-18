@@ -17,8 +17,9 @@ npm run preview  # preview the production build
 All copy lives in [`src/data/content.ts`](src/data/content.ts): name, bio, services, experience, projects, contact details and social links.
 
 - **Portrait**: put an image in `public/` and set `profile.portrait` (for example `"/portrait.jpg"`). Until then, initials are shown.
-- **Project screenshots**: put images in `public/projects/` and set `image` on each project. Until then, a styled CSS mock-up is shown.
-- **Featured projects**: set `featured: true`. The first featured project is shown large on the home page, the next two below it. Every project appears on `/projects`.
+- **Project screenshots**: put images in `public/images/projects/<id>/` and list them in the project's `images`. Several images become a carousel; set `bleed: true` on an image that brings its own backdrop (like a phone mock-up).
+- **Project order and layout**: `sort` sets the order, and `wide: true` makes a card span the full width. The first three projects also appear on the home page.
+- **Project links**: set `demo`, `source` (and `download` for mobile apps) to `null` to hide that button. `source` can also be a list like `[{ label: "API source", url: "…" }]` for projects split across repos.
 
 ## Routes
 
@@ -26,7 +27,7 @@ All copy lives in [`src/data/content.ts`](src/data/content.ts): name, bio, servi
 |---|---|
 | `/` | Home: hero, about, experience, featured work, contact |
 | `/projects` | All projects, filterable by category |
-| `/projects/:slug` | Project details |
+| `/projects/:id` | Project details |
 
 This is a single-page app using client-side routing, so the host must serve `index.html` for unknown paths (for example a `_redirects` rule on Netlify or a rewrite on Vercel).
 

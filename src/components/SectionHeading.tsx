@@ -1,9 +1,10 @@
 import type { ReactNode } from "react";
 import { Reveal } from "./Reveal";
 
-export function Eyebrow({ children }: { children: ReactNode }) {
+export function Eyebrow({ children, index }: { children: ReactNode; index?: string }) {
   return (
     <p className="flex items-center gap-4 text-xs font-semibold tracking-[0.25em] text-muted uppercase">
+      {index && <span className="font-mono text-accent">{index}</span>}
       {children}
       <span className="h-px w-20 bg-line-strong" aria-hidden="true" />
     </p>
@@ -13,18 +14,21 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 /** Big display heading; the `accent` words render in orange. */
 export function SectionHeading({
   eyebrow,
+  index,
   lead,
   accent,
   as: Tag = "h2",
 }: {
   eyebrow: string;
+  /** Optional section number shown before the eyebrow, e.g. "03". */
+  index?: string;
   lead: ReactNode;
   accent: string;
   as?: "h1" | "h2";
 }) {
   return (
     <Reveal>
-      <Eyebrow>{eyebrow}</Eyebrow>
+      <Eyebrow index={index}>{eyebrow}</Eyebrow>
       <Tag className="mt-6 font-display text-5xl leading-[0.95] font-extrabold tracking-[-0.03em] text-fg sm:text-6xl lg:text-7xl">
         {lead} <span className="text-accent">{accent}</span>
       </Tag>

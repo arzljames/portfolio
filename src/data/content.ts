@@ -2,26 +2,61 @@
 
 export type IconName = "code" | "globe" | "sparkles" | "bolt" | "palette";
 
-export type ProjectCategory = "Frontend" | "Fullstack" | "Backend";
-export type ProjectStatus = "Private" | "Live" | "WIP";
-export type ProjectVisual = "dashboard" | "phone" | "brand" | "laptop";
+export type ProjectCategory = "fullstack" | "internal" | "backend" | "mobile";
 
-export interface Project {
-  slug: string;
-  title: string;
-  summary: string;
-  description: string[];
-  category: ProjectCategory;
-  year: number;
-  status: ProjectStatus;
-  tags: string[];
-  /** Optional screenshot in /public; a styled placeholder renders otherwise. */
-  image?: string;
-  visual: ProjectVisual;
-  featured?: boolean;
-  liveUrl?: string;
-  repoUrl?: string;
+/** Drives the badge on a project's image; `released` shows none. */
+export type ProjectStatus = "featured" | "live" | "private" | "retired" | "concept" | "released";
+
+export interface ProjectImage {
+  /** Path in /public, e.g. "/images/projects/hideout/voice-channel.png". */
+  src: string;
+  alt: string;
+  /** Short label shown on the image, e.g. "Voice channel". */
+  caption: string;
+  /** The image already has its own backdrop (e.g. a phone mock-up), so it fills the frame. */
+  bleed?: boolean;
 }
+
+export interface ProjectMeta {
+  label: string;
+  value: string;
+}
+
+export interface ProjectSource {
+  label: string; // e.g. "App source", "API source"
+  url: string;
+}
+
+export interface ProjectLinks {
+  demo: string | null; // live site; null if not deployed / private / retired
+  source: string | ProjectSource[] | null; // repo URL, or several repos (e.g. app + API); null if private
+}
+
+export interface MobileProjectLinks extends ProjectLinks {
+  download: string | null; // store / APK link; null if not published
+}
+
+interface BaseProject {
+  id: string;
+  sort: number;
+  title: string;
+  /** Short domain label shown after the category, e.g. "Gaming". */
+  tagline: string;
+  /** Separate paragraphs with a blank line. */
+  description: string;
+  highlights?: string[];
+  stack: string[];
+  images: ProjectImage[];
+  status: ProjectStatus;
+  notice?: string;
+  meta?: ProjectMeta[];
+  /** Spans the full width of the grid. */
+  wide?: boolean;
+}
+
+export type Project =
+  | (BaseProject & { category: "mobile"; links: MobileProjectLinks })
+  | (BaseProject & { category: Exclude<ProjectCategory, "mobile">; links: ProjectLinks });
 
 export const profile = {
   name: "Arzl James",
@@ -36,11 +71,8 @@ export const profile = {
   location: "Zamboanga City, Philippines",
   responseTime: "24h",
   socials: [
-    { label: "GitHub", href: "https://github.com/" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/" },
-    { label: "Dribbble", href: "https://dribbble.com/" },
-    { label: "Twitter / X", href: "https://x.com/" },
-  ],
+    { label: "GitHub", href: "https://github.com/arzljames" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/arzljames" },  ],
 };
 
 export const about = {
@@ -145,91 +177,171 @@ export const experience: Job[] = [
     location: "Remote · Philippines",
     period: "Sep 2021 — Mar 2022",
     description:
-      "Developed a telemedicine application for a local hospital, enabling remote healthcare services. Built end-to-end using React, Node.js, Express, and MongoDB.",
-    tags: ["React", "Node.js", "Express", "MongoDB"],
+      "Published new web pages and revised existing ones across a portfolio of niche e-commerce brands, keeping content fresh and optimized for search. Also designed layout templates for articles and blog posts.",
+    tags: ["SEO", "Content Publishing", "E-commerce", "Page Layout"],
   },
 ];
 
+const shot = (
+  id: string,
+  file: string,
+  caption: string,
+  extra?: Partial<ProjectImage>,
+): ProjectImage => ({
+  src: `/images/projects/${id}/${file}.png`,
+  alt: `${caption} screen`,
+  caption,
+  ...extra,
+});
+
+const retiredNotice =
+  "This app is no longer live — the client has since migrated to a newer platform. The image above is a concept visual.";
+
 export const projects: Project[] = [
   {
-    slug: "dashboard-platform",
-    title: "Dashboard Platform",
-    summary:
-      "A data-rich frontend dashboard with real-time updates, charts, and a clean component architecture built in React and TypeScript.",
-    description: [
-      "An analytics dashboard for a SaaS product, surfacing growth, revenue and traffic metrics in real time.",
-      "Built around a small set of composable chart and card primitives so new views could be assembled quickly without drifting from the design system.",
+    id: "hideout",
+    sort: 1,
+    title: "Hideout",
+    category: "fullstack",
+    tagline: "Gaming",
+    description:
+      "Private rooms for your gaming squad — text and voice, invite only. Players sign in with their Steam account, spin up rooms with text and voice channels, and see what friends are playing right now.",
+    highlights: [
+      "Sign in with Steam, pulling each player's name, avatar and current game",
+      "Invite links with expiry and max-use limits, or invite a Steam user directly",
+      "Text and voice channels with speaking, muted and deafened states",
     ],
-    category: "Frontend",
-    year: 2024,
-    status: "Private",
-    tags: ["React", "TypeScript", "REST API", "Recharts"],
-    visual: "dashboard",
-    featured: true,
+    stack: ["React", "Vite", "Node.js", "Supabase", "Steam OAuth / Web API"],
+    images: [
+      shot("hideout", "text-channel", "Text channel"),
+      shot("hideout", "voice-channel", "Voice channel"),
+      shot("hideout", "invite-people", "Invite people"),
+      shot("hideout", "sign-in", "Sign in"),
+    ],
+    status: "featured",
+    links: {
+      demo: "https://hideout-app.vercel.app",
+      source: [
+        { label: "App source", url: "https://github.com/arzljames/hideout" },
+        { label: "API source", url: "https://github.com/arzljames/hideout-api" },
+      ],
+    },
+    wide: true,
   },
   {
-    slug: "e-commerce-storefront",
-    title: "E-Commerce Storefront",
-    summary:
-      "End-to-end e-commerce app with a React frontend, Node.js backend, and integrated payment flow.",
-    description: [
-      "A mobile-first storefront for a boutique retailer, from product catalogue to checkout.",
-      "The Node.js API handles inventory, orders and payment webhooks, backed by PostgreSQL.",
-    ],
-    category: "Fullstack",
-    year: 2024,
-    status: "Private",
-    tags: ["React", "Node.js", "PostgreSQL"],
-    visual: "phone",
-    featured: true,
+    id: "creatve",
+    sort: 3,
+    title: "CreatVe",
+    category: "fullstack",
+    tagline: "Social",
+    description:
+      "A social media platform that connects people wherever they are — with real-time notifications and an infinite-scrolling feed.",
+    stack: ["Next.js", "Express", "Node.js", "MongoDB"],
+    images: [shot("creatve", "home-feed", "Home feed"), shot("creatve", "sign-in", "Sign in")],
+    status: "live",
+    links: {
+      demo: "https://creatve-app.vercel.app",
+      source: "https://github.com/arzljames/socmed-app",
+    },
   },
   {
-    slug: "dev-portfolio",
-    title: "Dev Portfolio",
-    summary:
-      "A personal portfolio site with a focus on clean layout, smooth animations, and performance — designed and built from scratch.",
-    description: [
-      "This site. Designed and built from scratch with an emphasis on typography, rhythm and motion that stays out of the way.",
-      "Ships a small bundle, supports light and dark themes, and respects reduced-motion preferences.",
+    id: "docustream",
+    sort: 4,
+    title: "DocuStream",
+    category: "internal",
+    tagline: "Docs",
+    description:
+      "An internal team hub that brings documentation, RCA reports and release notes into one searchable place — organized by Mobile, Frontend and Backend, with in-app document previews and monthly release notes generated from completed Coda projects and tasks.",
+    stack: ["Coda API", "OAuth (Google · Microsoft · GitHub)"],
+    images: [
+      shot("docustream", "all-documents", "All documents"),
+      shot("docustream", "document-viewer", "Document viewer"),
+      shot("docustream", "monthly-release-notes", "Release notes"),
+      shot("docustream", "upload", "Upload"),
+      shot("docustream", "sign-in", "Sign in"),
     ],
-    category: "Frontend",
-    year: 2023,
-    status: "Live",
-    tags: ["React", "Tailwind CSS", "Framer Motion"],
-    visual: "brand",
-    featured: true,
+    status: "private",
+    links: { demo: null, source: null },
   },
   {
-    slug: "real-estate-api",
-    title: "Real Estate API",
-    summary:
-      "A listings and search API powering a luxury real-estate marketplace, with geo queries and image processing.",
-    description: [
-      "A REST API serving property listings, agent profiles and saved searches.",
-      "Includes geo-radius search, background image processing and rate-limited public endpoints.",
-    ],
-    category: "Backend",
-    year: 2023,
-    status: "Private",
-    tags: ["NestJS", "MongoDB", "Redis"],
-    visual: "laptop",
+    id: "telemedicine",
+    sort: 6,
+    title: "TeleMedicine",
+    category: "fullstack",
+    tagline: "Health",
+    description:
+      "Online consultations that connected patients with care during the COVID-19 pandemic — without leaving home.",
+    stack: ["React", "Express", "Node.js", "MongoDB"],
+    images: [shot("telemedicine", "concept", "Concept visual")],
+    status: "retired",
+    notice: retiredNotice,
+    links: {
+      demo: null,
+      source: [
+        { label: "App source", url: "https://github.com/arzljames/zcmc_telemedicine" },
+        { label: "API source", url: "https://github.com/arzljames/telemedicine-api" },
+      ],
+    },
   },
   {
-    slug: "ui-component-library",
-    title: "UI Component Library",
-    summary:
-      "A themeable React component library with accessible primitives, documented in Storybook.",
-    description: [
-      "A set of accessible, themeable React components shared across internal products.",
-      "Every component is keyboard-navigable, documented in Storybook and covered by visual regression tests.",
+    id: "lms",
+    sort: 7,
+    title: "Learning Management System",
+    category: "fullstack",
+    tagline: "Education",
+    description:
+      "A web-based classroom for running school activities — quizzes, assignments and student records in one place.",
+    stack: ["React", "Express", "Node.js", "MongoDB"],
+    images: [shot("lms", "concept", "Concept visual")],
+    status: "retired",
+    notice: retiredNotice,
+    links: { demo: null, source: null },
+  },
+  {
+    id: "jbaker-eprocurement-api",
+    sort: 2,
+    title: "JBaker eProcurement API",
+    category: "backend",
+    tagline: "API",
+    description:
+      "The backend for an online e-procurement platform — e-commerce, but built for companies. Employees browse company catalogs, raise purchase requests (PR) that move through role-based approvals into purchase orders (PO), and approved orders are paid through Purchase Central, an internal payment gateway.",
+    highlights: [
+      "Catalog browsing with product images served from S3",
+      "PR → approval → PO workflow with live status updates over Socket.IO",
+      "Role-based access control and payments through Purchase Central",
     ],
-    category: "Frontend",
-    year: 2023,
-    status: "WIP",
-    tags: ["React", "TypeScript", "Storybook"],
-    visual: "dashboard",
+    stack: ["NestJS", "Express", "MongoDB", "Socket.IO", "AWS S3"],
+    images: [shot("jbaker-eprocurement-api", "architecture", "System architecture")],
+    status: "private",
+    links: { demo: null, source: null },
+    wide: true,
+  },
+  {
+    id: "yakapp",
+    sort: 5,
+    title: "YakApp",
+    category: "mobile",
+    tagline: "Full stack",
+    description:
+      "A mobile translator and learning app for Yakan — an indigenous language of the Philippines with very few digital resources.\n\nTranslate between English and Yakan by typing or by scanning text from an image with OCR, then keep practicing with built-in learning lessons. A React Native app backed by a Node.js and Express API with MongoDB.",
+    stack: ["React Native", "Express", "Node.js", "MongoDB"],
+    images: [shot("yakapp", "translate", "Translate", { bleed: true })],
+    status: "released",
+    meta: [
+      { label: "Platform", value: "Android" },
+      { label: "Features", value: "Translate · Scan · Learn" },
+    ],
+    links: {
+      demo: null,
+      source: "https://github.com/arzljames/Yakapp",
+      download: null, // TODO: add the APK / Play Store link
+    },
+    wide: true,
   },
 ];
+
+/** Projects in display order. */
+export const sortedProjects = [...projects].sort((a, b) => a.sort - b.sort);
 
 export const navLinks = [
   { label: "About", id: "about" },
