@@ -1,32 +1,17 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { navLinks, profile } from "../data/content";
-import { useTheme } from "../hooks/useTheme";
 import { Icon } from "./Icon";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <Link
       to="/"
-      className={`font-display text-lg font-extrabold tracking-[-0.03em] text-fg ${className}`}
+      className={`font-display text-lg font-extrabold tracking-[-0.04em] text-fg ${className}`}
     >
       {profile.shortName}
     </Link>
-  );
-}
-
-function ThemeToggle() {
-  const { theme, toggle } = useTheme();
-  return (
-    <button
-      type="button"
-      onClick={toggle}
-      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-      className="grid size-9 place-items-center rounded-full border border-line-strong bg-surface-2 text-muted transition-colors hover:text-fg"
-    >
-      <Icon name={theme === "dark" ? "sun" : "moon"} size={15} />
-    </button>
   );
 }
 
@@ -34,19 +19,20 @@ export function TalkButton({ className = "" }: { className?: string }) {
   return (
     <Link
       to="/#contact"
-      className={`inline-flex items-center gap-2.5 rounded-full bg-accent px-5 py-2 text-sm font-bold text-white transition hover:brightness-110 ${className}`}
+      className={`group inline-flex items-center gap-1.5 rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-on-accent transition hover:brightness-110 ${className}`}
     >
       Let's talk
-      <span className="size-1.5 rounded-full bg-white/80" aria-hidden="true" />
+      <Icon name="arrowRight" size={15} className="transition-transform group-hover:translate-x-0.5" />
     </Link>
   );
 }
 
 /** The nav section currently under the upper third of the viewport, or null above the first one. */
-function useActiveSection(ids: string[]) {
+function useActiveSection(ids: string[], enabled: boolean) {
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!enabled) return;
     const onScroll = () => {
       const line = window.innerHeight / 3;
       const atBottom =
@@ -67,84 +53,57 @@ function useActiveSection(ids: string[]) {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [ids]);
+  }, [ids, enabled]);
 
-  return active;
+  return enabled ? active : null;
 }
 
 const sectionIds = navLinks.map((link) => link.id);
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const active = useActiveSection(sectionIds);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const floating = scrolled || open;
+  const { pathname } = useLocation();
+  const onHome = pathname === "/";
+  const section = useActiveSection(sectionIds, onHome);
+  // Off the home page, the projects pages count as "Work".
+  const active = onHome ? section : pathname.startsWith("/projects") ? "projects" : null;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <div
-        className={`transition-all duration-500 ease-out ${
-          floating
-            ? "mx-3 mt-2.5 rounded-[2rem] border border-line bg-surface/90 shadow-2xl shadow-black/20 backdrop-blur-xl"
-            : "mx-0 mt-0 border border-transparent"
-        }`}
-      >
-        <nav
-          className={`mx-auto flex max-w-[1280px] items-center justify-between px-4 transition-all duration-500 sm:px-8 ${
-            floating ? "h-[4.25rem]" : "h-16"
-          }`}
-          aria-label="Main"
-        >
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-4">
+      <div className="mx-auto max-w-[1240px] rounded-[2rem] border border-line bg-bg/80 shadow-2xl shadow-black/30 backdrop-blur-xl">
+        <nav className="flex h-16 items-center justify-between pr-2.5 pl-6" aria-label="Main">
           <Logo />
 
-          <div className="hidden items-center gap-8 md:flex">
-            <ul className="flex items-center gap-8">
-              {navLinks.map((link) => (
-                <li key={link.id}>
-                  <Link
-                    to={`/#${link.id}`}
-                    aria-current={active === link.id ? "location" : undefined}
-                    className={`relative py-1 text-sm transition-colors hover:text-fg ${
-                      active === link.id ? "text-fg" : "text-muted"
-                    }`}
-                  >
-                    {link.label}
-                    {active === link.id && (
-                      <motion.span
-                        layoutId="nav-active"
-                        className="absolute inset-x-0 -bottom-1 mx-auto h-0.5 w-4 rounded-full bg-accent"
-                        transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                      />
-                    )}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <ThemeToggle />
+          <ul className="hidden items-center gap-7 md:flex">
+            {navLinks.map((link) => (
+              <li key={link.id}>
+                <Link
+                  to={`/#${link.id}`}
+                  aria-current={active === link.id ? "location" : undefined}
+                  className={`text-sm transition-colors hover:text-fg ${
+                    active === link.id ? "font-bold text-fg" : "font-medium text-muted"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="hidden md:block">
             <TalkButton />
           </div>
 
-          <div className="flex items-center gap-3 md:hidden">
-            <ThemeToggle />
-            <button
-              type="button"
-              onClick={() => setOpen((o) => !o)}
-              aria-expanded={open}
-              aria-controls="mobile-menu"
-              aria-label={open ? "Close menu" : "Open menu"}
-              className="grid size-9 place-items-center rounded-full border border-line-strong text-fg"
-            >
-              <Icon name={open ? "close" : "menu"} size={16} />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            className="grid size-11 place-items-center rounded-full border border-line-strong text-fg md:hidden"
+          >
+            <Icon name={open ? "close" : "menu"} size={16} />
+          </button>
         </nav>
 
         <AnimatePresence initial={false}>

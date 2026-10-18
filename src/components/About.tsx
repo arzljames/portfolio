@@ -1,72 +1,44 @@
 import { about } from "../data/content";
-import { Icon } from "./Icon";
 import { Reveal } from "./Reveal";
-import { Container, SectionHeading } from "./SectionHeading";
+import { Container, DotList, SectionHeading } from "./SectionHeading";
 
 export function About() {
   return (
-    <section id="about" className="relative overflow-hidden py-24 sm:py-32">
-      <div
-        className="pointer-events-none absolute -right-40 bottom-24 size-[32rem] rounded-full bg-accent/10 blur-[140px]"
-        aria-hidden="true"
-      />
-      <Container className="relative grid gap-16 lg:grid-cols-[1fr_1fr] lg:gap-16">
-        <div>
-          <SectionHeading
-            eyebrow="About me"
-            lead={
-              <>
-                Building for the
-                <br />
-                web, front to
-              </>
-            }
-            accent="back."
-          />
+    <section id="about" className="py-28 sm:py-36">
+      <Container>
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <SectionHeading index="01" eyebrow="About">
+            Building for
+            <br />
+            the web,
+            <br />
+            front to back.
+          </SectionHeading>
 
-          <Reveal delay={0.1} className="mt-10 space-y-5 text-[17px] leading-relaxed text-muted">
+          <Reveal delay={0.1} className="space-y-6 text-lg leading-relaxed text-fg/80 lg:pt-10">
             {about.paragraphs.map((p) => (
               <p key={p}>{p}</p>
             ))}
           </Reveal>
-
-          <Reveal delay={0.15}>
-            <dl className="mt-10 grid grid-cols-2 gap-y-8 border-t border-line pt-8 sm:grid-cols-4">
-              {about.stats.map((stat) => (
-                <div key={stat.value} className="flex flex-col-reverse gap-1">
-                  <dt className="text-xs font-semibold tracking-[0.2em] text-muted uppercase">
-                    {stat.label}
-                  </dt>
-                  <dd className="font-display text-4xl font-black tracking-[-0.05em] text-fg">
-                    {stat.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
         </div>
 
-        <ol className="flex flex-col gap-4 lg:pt-20">
+        <ol className="mt-16 grid gap-4 md:grid-cols-3">
           {about.services.map((service, i) => (
             <li key={service.title}>
-              <Reveal delay={i * 0.06}>
-                <article className="group flex gap-5 rounded-2xl border border-line bg-surface p-6 transition-colors hover:border-line-strong hover:bg-surface-2">
-                  <span className="pt-1 font-mono text-xs font-semibold text-faint">
+              <Reveal delay={i * 0.06} className="h-full">
+                <article className="flex h-full flex-col rounded-[22px] border border-line bg-surface p-7 transition-colors hover:border-line-strong">
+                  <span className="font-mono text-xs text-accent">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <div className="flex-1">
-                    <h3 className="font-display text-lg font-bold tracking-[-0.02em] text-fg">
-                      {service.title}
-                    </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-muted">
-                      {service.description}
-                    </p>
+                  <h3 className="mt-5 font-display text-xl font-bold tracking-[-0.03em] text-fg">
+                    {service.title}
+                  </h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-muted">
+                    {service.description}
+                  </p>
+                  <div className="mt-auto pt-6">
+                    <DotList items={service.tags} className="border-t border-line pt-5 text-fg/85" />
                   </div>
-                  <Icon
-                    name={service.icon}
-                    size={20}
-                    className="shrink-0 text-accent transition-transform duration-300 group-hover:scale-110"
-                  />
                 </article>
               </Reveal>
             </li>

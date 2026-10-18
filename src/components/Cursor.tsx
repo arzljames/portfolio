@@ -122,7 +122,7 @@ export function Cursor() {
           {mode === "label" && (
             <motion.span
               key={label}
-              className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 text-xs font-bold tracking-[0.15em] whitespace-nowrap text-white uppercase"
+              className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 text-xs font-bold tracking-[0.15em] whitespace-nowrap text-on-accent uppercase"
               initial={{ opacity: 0, scale: 0.6 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.6 }}

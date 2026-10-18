@@ -1,11 +1,9 @@
 // All site copy lives here — edit this file to update the portfolio.
 
-export type IconName = "code" | "globe" | "sparkles" | "bolt" | "palette";
-
 export type ProjectCategory = "fullstack" | "internal" | "backend" | "mobile";
 
-/** Drives the badge on a project's image; `released` shows none. */
-export type ProjectStatus = "featured" | "live" | "private" | "retired" | "concept" | "released";
+/** Drives the badge on a project's image. */
+export type ProjectStatus = "live" | "private" | "internal" | "source" | "retired";
 
 export interface ProjectImage {
   /** Path in /public, e.g. "/images/projects/hideout/voice-channel.png". */
@@ -15,7 +13,27 @@ export interface ProjectImage {
   caption: string;
   /** The image already has its own backdrop (e.g. a phone mock-up), so it fills the frame. */
   bleed?: boolean;
+  /** A recreation rather than a real screenshot; labelled "Concept visual". */
+  concept?: boolean;
+  /** Sentence shown under the image in the project page gallery. */
+  description?: string;
 }
+
+/** A "What it does" row on the project page. */
+export interface ProjectFeature {
+  title: string;
+  description: string;
+  image: ProjectImage;
+}
+
+/** An "Under the hood" card, e.g. the client or the API. */
+export interface ProjectPart {
+  label: string;
+  title: string;
+  description: string;
+  repo?: ProjectSource;
+}
+
 
 export interface ProjectMeta {
   label: string;
@@ -42,7 +60,9 @@ interface BaseProject {
   title: string;
   /** Short domain label shown after the category, e.g. "Gaming". */
   tagline: string;
-  /** Separate paragraphs with a blank line. */
+  /** One or two sentences for the project cards. */
+  summary: string;
+  /** Full write-up for the project page. Separate paragraphs with a blank line. */
   description: string;
   highlights?: string[];
   stack: string[];
@@ -50,74 +70,100 @@ interface BaseProject {
   status: ProjectStatus;
   notice?: string;
   meta?: ProjectMeta[];
-  /** Spans the full width of the grid. */
+  /** Spans the full width of the projects grid. */
   wide?: boolean;
+  /** Shown as "Type" on the project page; defaults to one based on the category. */
+  type?: string;
+  /** Your role on the project; defaults to "Solo design & build". */
+  role?: string;
+  /** `heading` can contain "\n" for a line break. */
+  features?: { heading: string; items: ProjectFeature[] };
+  architecture?: { heading: string; parts: ProjectPart[] };
 }
 
 export type Project =
   | (BaseProject & { category: "mobile"; links: MobileProjectLinks })
   | (BaseProject & { category: Exclude<ProjectCategory, "mobile">; links: ProjectLinks });
 
+export const categoryLabels: Record<ProjectCategory, string> = {
+  fullstack: "Full stack",
+  internal: "Internal tool",
+  backend: "Backend",
+  mobile: "Mobile",
+};
+
+/** Default "Type" on the project page when a project doesn't set one. */
+export const categoryTypes: Record<ProjectCategory, string> = {
+  fullstack: "Full-stack web app",
+  internal: "Internal web tool",
+  backend: "Backend API",
+  mobile: "Mobile app",
+};
+
+export const statusLabels: Record<ProjectStatus, string> = {
+  live: "Live",
+  private: "Private",
+  internal: "Internal",
+  source: "Source only",
+  retired: "No longer live",
+};
+
 export const profile = {
   name: "Arzl James",
   shortName: "A.James",
   role: "Fullstack Developer",
-  tagline: "Fullstack dev. UI/UX driven. Shipping with agentic AI.",
-  disciplines: ["Fullstack", "UI/UX", "Agentic AI"],
+  /** Hero headline: the first part is bright, the second muted. */
+  headline: ["Fullstack dev. UI/UX driven.", "Shipping with agentic AI."],
+  intro:
+    "Five years building React and Node products end to end. Currently fullstack at Content.one, working remotely with a San Francisco team from the Philippines.",
   available: true,
   /** Optional portrait in /public, e.g. "/portrait.jpg". */
   portrait: "/portrait.jpg" as string | undefined,
   email: "arzljames15@gmail.com",
   location: "Zamboanga City, Philippines",
-  responseTime: "24h",
+  city: "Zamboanga",
+  /** IANA time zone for the live local clock. */
+  timeZone: "Asia/Manila",
+  utcOffset: "UTC+8",
+  responseTime: { value: "Within 24h", detail: "on weekdays" },
   socials: [
     { label: "GitHub", href: "https://github.com/arzljames" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/arzljames" },  ],
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/arzljames" },
+  ],
 };
+
+export const stats = [
+  { value: "5+ years", label: "Building for the web since 2021" },
+  { value: "Full stack", label: "Interface, API and database" },
+  { value: "4 teams", label: "Most of it remote" },
+  { value: "UTC+8", label: "Replies within a day" },
+];
 
 export const about = {
   paragraphs: [
-    "I'm a fullstack web developer with 5 years of experience across both sides of the stack — from responsive, performant interfaces in React and TypeScript to APIs, databases, and real-time services with Node.js and NestJS.",
-    "I genuinely love designing things, so I bring a UI/UX mindset to everything I build — caring about spacing, typography, and how an interface feels, not just whether it works. Today I pair that with agentic AI workflows to plan, build, and ship faster without cutting corners.",
-  ],
-  stats: [
-    { value: "5+", label: "Years" },
-    { value: "FS", label: "Fullstack" },
-    { value: "UX", label: "Design" },
-    { value: "AI", label: "Agentic" },
+    "I'm a fullstack developer with five years across both sides of the stack — responsive, fast interfaces in React and TypeScript, and the APIs, databases and real-time services behind them in Node.js and NestJS.",
+    "I genuinely love designing, so I care about spacing, typography and how an interface feels — not just whether it works. Today I pair that with agentic AI workflows to plan, build and ship faster without cutting corners.",
   ],
   services: [
     {
-      icon: "globe",
-      title: "Fullstack Development",
+      title: "Fullstack development",
       description:
-        "React, TypeScript, Node.js, NestJS, databases — end-to-end products from UI to API",
+        "Whole products, from the interface to the API and database — fast, accessible, and tidy under the hood.",
+      tags: ["React", "TypeScript", "React Native", "Node", "NestJS", "MongoDB"],
     },
     {
-      icon: "code",
-      title: "Frontend Engineering",
+      title: "UI/UX design",
       description:
-        "Fast, accessible, pixel-perfect interfaces for web and mobile with React and React Native",
+        "Intuitive flows and polished interfaces, designed with the same care as the code that runs them.",
+      tags: ["Flows", "Layout", "Typography", "Interaction"],
     },
     {
-      icon: "sparkles",
-      title: "Agentic AI Workflows",
+      title: "Agentic AI workflows",
       description:
-        "Building with AI agents in the loop — planning, scaffolding, reviewing, and shipping faster",
+        "AI agents in the loop to plan, scaffold and review — so features ship faster without cutting corners.",
+      tags: ["Plan", "Scaffold", "Review", "Ship"],
     },
-    {
-      icon: "bolt",
-      title: "Performance & Quality",
-      description:
-        "Clean code, optimized builds, and smooth user experiences across devices",
-    },
-    {
-      icon: "palette",
-      title: "UI/UX Design",
-      description:
-        "Designing intuitive flows and polished interfaces — layout, typography, and visual craft",
-    },
-  ] satisfies { icon: IconName; title: string; description: string }[],
+  ],
 };
 
 export interface Job {
@@ -141,14 +187,8 @@ export const experience: Job[] = [
     period: "Sep 2023 — Present",
     current: true,
     description:
-      "Building and maintaining a CMS application built around their core product, Zesty CMS. The app is integrated with Zesty APIs and built with React Native, tailored specifically for The Salvation Army Corps. Also handling customer support alongside development.",
-    tags: [
-      "React",
-      "React Native",
-      "Zesty CMS",
-      "REST APIs",
-      "Customer Support",
-    ],
+      "Building a React Native CMS app on the Zesty CMS APIs, tailored for The Salvation Army Corps — and handling customer support alongside development.",
+    tags: ["React", "React Native", "Zesty CMS", "REST APIs"],
   },
   {
     role: "Backend Developer",
@@ -157,8 +197,8 @@ export const experience: Job[] = [
     location: "Remote · Philippines",
     period: "Aug 2022 — Sep 2023",
     description:
-      "Worked in an IT firm, collaborating with a team to build SaaS e-commerce and online e-procurement platforms for various local companies. Focused mainly on the backend side using NestJS, MongoDB, and WebSockets.",
-    tags: ["NestJS", "MongoDB", "WebSockets", "SaaS"],
+      "Backends for SaaS e-commerce and online e-procurement platforms for local companies, as part of a product team.",
+    tags: ["NestJS", "MongoDB", "WebSockets"],
   },
   {
     role: "Fullstack Developer",
@@ -167,18 +207,18 @@ export const experience: Job[] = [
     location: "Zamboanga City, Philippines",
     period: "Jun 2022 — Aug 2022",
     description:
-      "Developed a telemedicine application for a local hospital, enabling remote healthcare services. Built end-to-end using React, Node.js, Express, and MongoDB.",
+      "A telemedicine app for a local hospital, enabling remote healthcare — built end to end.",
     tags: ["React", "Node.js", "Express", "MongoDB"],
   },
   {
-    role: "Frontend/SEO Intern",
+    role: "Frontend / SEO Intern",
     company: "Digitalroom Inc.",
     logo: "/logos/digitalroom.png",
     location: "Remote · Philippines",
     period: "Sep 2021 — Mar 2022",
     description:
-      "Published new web pages and revised existing ones across a portfolio of niche e-commerce brands, keeping content fresh and optimized for search. Also designed layout templates for articles and blog posts.",
-    tags: ["SEO", "Content Publishing", "E-commerce", "Page Layout"],
+      "Published and revised pages across niche e-commerce brands, optimized for search, and designed article layout templates.",
+    tags: ["SEO", "Content publishing", "Page layout"],
   },
 ];
 
@@ -204,8 +244,10 @@ export const projects: Project[] = [
     title: "Hideout",
     category: "fullstack",
     tagline: "Gaming",
+    summary:
+      "Private rooms for your gaming squad — text and voice, invite only. Sign in with Steam and see what friends are playing right now.",
     description:
-      "Private rooms for your gaming squad — text and voice, invite only. Players sign in with their Steam account, spin up rooms with text and voice channels, and see what friends are playing right now.",
+      "Private rooms for your gaming squad — text and voice, invite only. Players sign in with Steam, spin up rooms, and see what friends are playing right now.",
     highlights: [
       "Sign in with Steam, pulling each player's name, avatar and current game",
       "Invite links with expiry and max-use limits, or invite a Steam user directly",
@@ -213,12 +255,68 @@ export const projects: Project[] = [
     ],
     stack: ["React", "Vite", "Node.js", "Supabase", "Steam OAuth / Web API"],
     images: [
-      shot("hideout", "text-channel", "Text channel"),
-      shot("hideout", "voice-channel", "Voice channel"),
-      shot("hideout", "invite-people", "Invite people"),
-      shot("hideout", "sign-in", "Sign in"),
+      shot("hideout", "text-channel", "Text channel", {
+        description:
+          "Text channels for plans, clips and everything else — with typing indicators and edits.",
+      }),
+      shot("hideout", "voice-channel", "Voice channel", {
+        description:
+          "Voice channels show who's speaking, muted or deafened — and what each person is playing.",
+      }),
+      shot("hideout", "invite-people", "Invite people", {
+        description: "Invite links with an expiry and a use limit, or invite a Steam user directly.",
+      }),
+      shot("hideout", "sign-in", "Sign in", {
+        description: "One click with Steam — Hideout only reads a public profile.",
+      }),
     ],
-    status: "featured",
+    features: {
+      heading: "A clubhouse for your squad\n— no strangers, no setup.",
+      items: [
+        {
+          title: "Sign in with Steam",
+          description:
+            "One click with the account players already have. Hideout only reads a public profile — name, avatar and current game — so friends can see what everyone's playing.",
+          image: shot("hideout", "sign-in", "Sign in"),
+        },
+        {
+          title: "Invite only, on your terms",
+          description:
+            "Rooms stay private. Share a link that expires after a set time or a set number of uses — or invite a Steam user directly.",
+          image: shot("hideout", "invite-people", "Invite people"),
+        },
+        {
+          title: "Voice that feels live",
+          description:
+            "Text and voice channels side by side. See who's speaking, muted or deafened at a glance — and what each of them is playing.",
+          image: shot("hideout", "voice-channel", "Voice channel"),
+        },
+      ],
+    },
+    architecture: {
+      heading: "Two repos, one product.",
+      parts: [
+        {
+          label: "Client",
+          title: "React + Vite",
+          description: "The rooms, channels, chat and voice UI.",
+          repo: { label: "arzljames/hideout", url: "https://github.com/arzljames/hideout" },
+        },
+        {
+          label: "API",
+          title: "Node.js",
+          description: "Rooms, invites and the Steam integration.",
+          repo: { label: "arzljames/hideout-api", url: "https://github.com/arzljames/hideout-api" },
+        },
+        {
+          label: "Data & identity",
+          title: "Supabase + Steam",
+          description:
+            "Supabase for app data; Steam OAuth and Web API for sign-in, profiles and current games.",
+        },
+      ],
+    },
+    status: "live",
     links: {
       demo: "https://hideout-app.vercel.app",
       source: [
@@ -234,6 +332,8 @@ export const projects: Project[] = [
     title: "CreatVe",
     category: "fullstack",
     tagline: "Social",
+    summary:
+      "A social platform that connects people wherever they are — real-time notifications and an infinite-scrolling feed.",
     description:
       "A social media platform that connects people wherever they are — with real-time notifications and an infinite-scrolling feed.",
     stack: ["Next.js", "Express", "Node.js", "MongoDB"],
@@ -250,6 +350,8 @@ export const projects: Project[] = [
     title: "DocuStream",
     category: "internal",
     tagline: "Docs",
+    summary:
+      "One searchable hub for docs, RCA reports and release notes — with monthly notes generated from completed Coda projects and tasks.",
     description:
       "An internal team hub that brings documentation, RCA reports and release notes into one searchable place — organized by Mobile, Frontend and Backend, with in-app document previews and monthly release notes generated from completed Coda projects and tasks.",
     stack: ["Coda API", "OAuth (Google · Microsoft · GitHub)"],
@@ -260,7 +362,7 @@ export const projects: Project[] = [
       shot("docustream", "upload", "Upload"),
       shot("docustream", "sign-in", "Sign in"),
     ],
-    status: "private",
+    status: "internal",
     links: { demo: null, source: null },
   },
   {
@@ -269,10 +371,12 @@ export const projects: Project[] = [
     title: "TeleMedicine",
     category: "fullstack",
     tagline: "Health",
+    summary:
+      "Online consultations that connected patients with care during the COVID-19 pandemic — without leaving home.",
     description:
       "Online consultations that connected patients with care during the COVID-19 pandemic — without leaving home.",
     stack: ["React", "Express", "Node.js", "MongoDB"],
-    images: [shot("telemedicine", "concept", "Concept visual")],
+    images: [shot("telemedicine", "concept", "Concept visual", { concept: true })],
     status: "retired",
     notice: retiredNotice,
     links: {
@@ -289,10 +393,12 @@ export const projects: Project[] = [
     title: "Learning Management System",
     category: "fullstack",
     tagline: "Education",
+    summary:
+      "A web classroom for running school activities — quizzes, assignments and student records in one place.",
     description:
       "A web-based classroom for running school activities — quizzes, assignments and student records in one place.",
     stack: ["React", "Express", "Node.js", "MongoDB"],
-    images: [shot("lms", "concept", "Concept visual")],
+    images: [shot("lms", "concept", "Concept visual", { concept: true })],
     status: "retired",
     notice: retiredNotice,
     links: { demo: null, source: null },
@@ -301,8 +407,11 @@ export const projects: Project[] = [
     id: "jbaker-eprocurement-api",
     sort: 2,
     title: "JBaker eProcurement API",
+    role: "Backend developer, working with a team of backend devs",
     category: "backend",
     tagline: "API",
+    summary:
+      "The backend for a B2B e-procurement platform: purchase requests move through role-based approvals into orders, live over Socket.IO.",
     description:
       "The backend for an online e-procurement platform — e-commerce, but built for companies. Employees browse company catalogs, raise purchase requests (PR) that move through role-based approvals into purchase orders (PO), and approved orders are paid through Purchase Central, an internal payment gateway.",
     highlights: [
@@ -314,7 +423,6 @@ export const projects: Project[] = [
     images: [shot("jbaker-eprocurement-api", "architecture", "System architecture")],
     status: "private",
     links: { demo: null, source: null },
-    wide: true,
   },
   {
     id: "yakapp",
@@ -322,11 +430,13 @@ export const projects: Project[] = [
     title: "YakApp",
     category: "mobile",
     tagline: "Full stack",
+    summary:
+      "Translate between English and Yakan — an indigenous language of the Philippines — by typing or scanning text, then keep practicing with lessons.",
     description:
       "A mobile translator and learning app for Yakan — an indigenous language of the Philippines with very few digital resources.\n\nTranslate between English and Yakan by typing or by scanning text from an image with OCR, then keep practicing with built-in learning lessons. A React Native app backed by a Node.js and Express API with MongoDB.",
     stack: ["React Native", "Express", "Node.js", "MongoDB"],
     images: [shot("yakapp", "translate", "Translate", { bleed: true })],
-    status: "released",
+    status: "source",
     meta: [
       { label: "Platform", value: "Android" },
       { label: "Features", value: "Translate · Scan · Learn" },
@@ -336,7 +446,6 @@ export const projects: Project[] = [
       source: "https://github.com/arzljames/Yakapp",
       download: null, // TODO: add the APK / Play Store link
     },
-    wide: true,
   },
 ];
 
@@ -346,6 +455,6 @@ export const sortedProjects = [...projects].sort((a, b) => a.sort - b.sort);
 export const navLinks = [
   { label: "About", id: "about" },
   { label: "Experience", id: "experience" },
-  { label: "Projects", id: "projects" },
+  { label: "Work", id: "projects" },
   { label: "Contact", id: "contact" },
 ];

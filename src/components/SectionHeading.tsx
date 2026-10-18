@@ -1,46 +1,56 @@
 import type { ReactNode } from "react";
 import { Reveal } from "./Reveal";
 
+/** Mono label above a heading, e.g. "01 — About". */
 export function Eyebrow({ children, index }: { children: ReactNode; index?: string }) {
   return (
-    <p className="flex items-center gap-4 text-xs font-semibold tracking-[0.25em] text-muted uppercase">
-      {index && <span className="font-mono text-accent">{index}</span>}
+    <p className="font-mono text-xs tracking-[0.12em] text-accent uppercase">
+      {index && <>{index} — </>}
       {children}
-      <span className="h-px w-20 bg-line-strong" aria-hidden="true" />
     </p>
   );
 }
 
-/** Big display heading; the `accent` words render in orange. */
+export const headingClass =
+  "font-display font-extrabold leading-[0.95] tracking-[-0.045em] text-fg";
+
+/** Big display heading with its eyebrow. */
 export function SectionHeading({
   eyebrow,
   index,
-  lead,
-  accent,
+  children,
   as: Tag = "h2",
 }: {
   eyebrow: string;
   /** Optional section number shown before the eyebrow, e.g. "03". */
   index?: string;
-  lead: ReactNode;
-  accent: string;
+  children: ReactNode;
   as?: "h1" | "h2";
 }) {
   return (
     <Reveal>
       <Eyebrow index={index}>{eyebrow}</Eyebrow>
-      <Tag className="mt-6 font-display text-5xl leading-[0.95] font-extrabold tracking-[-0.03em] text-fg sm:text-6xl lg:text-7xl">
-        {lead} <span className="text-accent">{accent}</span>
-      </Tag>
+      <Tag className={`mt-6 text-5xl sm:text-6xl lg:text-7xl ${headingClass}`}>{children}</Tag>
     </Reveal>
   );
 }
 
-export function Tag({ children }: { children: ReactNode }) {
+/** Mono list separated by middots, used for stacks and tags. */
+export function DotList({ items, className = "" }: { items: string[]; className?: string }) {
   return (
-    <span className="rounded-full border border-line-strong bg-surface-2/60 px-3 py-1 text-xs font-medium text-muted">
-      {children}
-    </span>
+    <ul className={`flex flex-wrap items-center gap-y-1 font-mono text-xs text-muted ${className}`}>
+      {items.map((item, i) => (
+        <li key={item} className="flex items-center">
+          {item}
+          {/* Trailing separator, so a wrapped line ends with "·" instead of starting with one. */}
+          {i < items.length - 1 && (
+            <span className="mx-2 text-faint" aria-hidden="true">
+              ·
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -52,7 +62,7 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div className={`mx-auto w-full max-w-[1280px] px-4 sm:px-8 ${className}`}>
+    <div className={`mx-auto w-full max-w-7xl px-4 sm:px-8 xl:px-12 ${className}`}>
       {children}
     </div>
   );
