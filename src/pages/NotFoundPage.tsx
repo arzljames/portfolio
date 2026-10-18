@@ -10,7 +10,7 @@ export function NotFoundPage() {
         </p>
         <p className="mt-4 text-muted">This page doesn't exist.</p>
         <div className="mt-8">
-          <BackLink to="/">Back to Home</BackLink>
+          <BackLink to="/">Back to home</BackLink>
         </div>
       </Container>
     </main>

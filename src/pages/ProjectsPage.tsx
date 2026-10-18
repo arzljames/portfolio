@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { Icon } from "../components/Icon";
 import { ProjectCard } from "../components/ProjectCard";
 import { Reveal } from "../components/Reveal";
-import { Container, SectionHeading } from "../components/SectionHeading";
+import { Container, headingClass, SectionHeading } from "../components/SectionHeading";
 import { profile, sortedProjects, type ProjectCategory } from "../data/content";
 
 const filters: { value: ProjectCategory | "all"; label: string }[] = [
@@ -15,21 +15,49 @@ const filters: { value: ProjectCategory | "all"; label: string }[] = [
   { value: "mobile", label: "Mobile" },
 ];
 
-const github = profile.socials.find((s) => s.label === "GitHub")?.href;
+const social = (label: string) => profile.socials.find((s) => s.label === label)?.href;
 
 export function BackLink({ to, children }: { to: string; children: string }) {
   return (
     <Link
       to={to}
-      className="group inline-flex items-center gap-2 text-sm font-semibold text-muted transition-colors hover:text-fg"
+      className="group inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-fg"
     >
-      <Icon
-        name="arrowLeft"
-        size={15}
-        className="transition-transform group-hover:-translate-x-0.5"
-      />
+      <Icon name="arrowLeft" size={15} className="transition-transform group-hover:-translate-x-0.5" />
       {children}
     </Link>
+  );
+}
+
+/** Closing call to action for pages other than home. */
+export function BuildItCta() {
+  const linkedin = social("LinkedIn");
+  return (
+    <Reveal className="mt-28 text-center sm:mt-36">
+      <h2 className={`text-[clamp(2.75rem,7vw,5.5rem)] ${headingClass}`}>
+        Have something in
+        <br />
+        mind? <span className="text-accent">Let's build it.</span>
+      </h2>
+      <div className="mt-10 flex flex-wrap justify-center gap-3">
+        <a
+          href={`mailto:${profile.email}`}
+          className="rounded-full bg-accent px-6 py-3.5 text-[15px] font-bold text-on-accent transition hover:brightness-110"
+        >
+          {profile.email}
+        </a>
+        {linkedin && (
+          <a
+            href={linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-full border border-line-strong px-6 py-3.5 text-[15px] font-bold text-fg transition-colors hover:bg-surface-2"
+          >
+            LinkedIn <Icon name="arrowUpRight" size={14} />
+          </a>
+        )}
+      </div>
+    </Reveal>
   );
 }
 
@@ -39,48 +67,50 @@ export function ProjectsPage() {
     value === "all" ? sortedProjects.length : sortedProjects.filter((p) => p.category === value).length;
   const visible =
     filter === "all" ? sortedProjects : sortedProjects.filter((p) => p.category === filter);
+  const github = social("GitHub");
 
   return (
-    <main className="min-h-svh bg-grid pt-16 pb-32">
+    <main className="pt-36 pb-28 sm:pt-40">
       <Container>
-        <BackLink to="/">Back to Home</BackLink>
+        <BackLink to="/">Back to home</BackLink>
 
-        <div className="mt-20">
-          <SectionHeading as="h1" index="03" eyebrow="Selected work" lead="Things I've" accent="built." />
+        <div className="mt-14">
+          <SectionHeading as="h1" index="03" eyebrow="All projects">
+            Things I've built.
+          </SectionHeading>
           <Reveal delay={0.1}>
-            <p className="mt-8 max-w-xl text-[17px] leading-relaxed text-muted">
-              Full-stack web apps, a mobile app for an indigenous language, and tools built for
-              real people — from internal team hubs to online classrooms.
+            <p className="mt-8 max-w-md text-lg leading-relaxed text-muted">
+              Full-stack web apps, a mobile app for an indigenous language, and tools built for real
+              people — from internal team hubs to online classrooms.
             </p>
           </Reveal>
         </div>
 
-        <div className="mt-12 flex flex-wrap gap-2" role="group" aria-label="Filter projects">
+        <div className="mt-12 flex flex-wrap gap-2.5" role="group" aria-label="Filter projects">
           {filters
             .filter((f) => count(f.value) > 0)
-            .map((f) => (
-              <button
-                key={f.value}
-                type="button"
-                onClick={() => setFilter(f.value)}
-                aria-pressed={filter === f.value}
-                className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-colors ${
-                  filter === f.value
-                    ? "bg-accent text-white"
-                    : "border border-line-strong bg-surface/60 text-fg hover:bg-surface-2"
-                }`}
-              >
-                {f.label}
-                <span
-                  className={`ml-2 font-mono text-xs ${filter === f.value ? "text-white/75" : "text-faint"}`}
+            .map((f) => {
+              const on = filter === f.value;
+              return (
+                <button
+                  key={f.value}
+                  type="button"
+                  onClick={() => setFilter(f.value)}
+                  aria-pressed={on}
+                  className={`rounded-full px-5 py-3 text-sm font-bold transition-colors ${
+                    on ? "bg-fg text-bg" : "border border-line-strong text-fg hover:bg-surface-2"
+                  }`}
                 >
-                  {count(f.value)}
-                </span>
-              </button>
-            ))}
+                  {f.label}
+                  <span className={`ml-2 font-mono text-xs font-normal ${on ? "text-bg/60" : "text-muted"}`}>
+                    {count(f.value)}
+                  </span>
+                </button>
+              );
+            })}
         </div>
 
-        <motion.ul layout className="mt-14 grid gap-6 lg:grid-cols-2">
+        <motion.ul layout className="mt-8 grid gap-5 lg:grid-cols-2">
           <AnimatePresence mode="popLayout" initial={false}>
             {visible.map((project) => (
               <motion.li
@@ -99,28 +129,28 @@ export function ProjectsPage() {
         </motion.ul>
 
         {github && (
-          <Reveal className="mt-14">
-            <div className="flex flex-col items-start justify-between gap-6 rounded-[28px] border border-dashed border-line-strong p-7 sm:flex-row sm:items-center sm:p-9">
+          <Reveal className="mt-5">
+            <div className="flex flex-col items-start justify-between gap-6 rounded-[28px] border border-dashed border-line-strong px-7 py-9 sm:flex-row sm:items-center sm:px-11">
               <div>
-                <h2 className="font-display text-2xl font-extrabold tracking-[-0.03em] text-fg">
+                <h2 className="font-display text-2xl font-extrabold tracking-[-0.04em] text-fg sm:text-3xl">
                   More experiments live on GitHub.
                 </h2>
-                <p className="mt-1.5 text-[15px] text-muted">
-                  Side projects, practice repos and works in progress.
-                </p>
+                <p className="mt-2 text-muted">Side projects, practice repos and works in progress.</p>
               </div>
               <a
                 href={github}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex shrink-0 items-center gap-2.5 rounded-full bg-fg px-6 py-3.5 text-sm font-bold text-bg transition-opacity hover:opacity-90"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line-strong px-6 py-3.5 text-[15px] font-bold text-fg transition-colors hover:bg-surface-2"
               >
-                <Icon name="github" size={18} />
                 {github.replace(/^https?:\/\//, "")}
+                <Icon name="arrowUpRight" size={14} />
               </a>
             </div>
           </Reveal>
         )}
+
+        <BuildItCta />
       </Container>
     </main>
   );

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { createBrowserRouter, Outlet, RouterProvider, useLocation } from "react-router";
 import { Cursor } from "./components/Cursor";
 import { Footer } from "./components/Footer";
+import { Navbar } from "./components/Navbar";
 import { HomePage } from "./pages/HomePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProjectPage } from "./pages/ProjectPage";
@@ -28,6 +29,7 @@ function Layout() {
   useScrollOnNavigate();
   return (
     <MotionConfig reducedMotion="user">
+      <Navbar />
       <Outlet />
       <Footer />
       <Cursor />
