@@ -36,7 +36,7 @@ function Portrait() {
       <figcaption className="absolute inset-x-3.5 bottom-3.5 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-black/65 px-4 py-3 backdrop-blur-md">
         <span className="truncate text-sm font-bold text-white">{profile.role}</span>
         <span className="shrink-0 font-mono text-xs text-white/60">
-          {profile.city} · <span className="text-white/85">{time}</span>
+          {profile.country} · <span className="text-white/85">{time}</span>
         </span>
       </figcaption>
     </motion.figure>
