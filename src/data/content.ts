@@ -121,7 +121,7 @@ export const profile = {
   portrait: "/portrait.jpg" as string | undefined,
   email: "arzljames15@gmail.com",
   location: "Zamboanga City, Philippines",
-  city: "Zamboanga",
+  country: "Philippines",
   /** IANA time zone for the live local clock. */
   timeZone: "Asia/Manila",
   utcOffset: "UTC+8",

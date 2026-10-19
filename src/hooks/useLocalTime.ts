@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-/** The current time in `timeZone` as "HH:MM" (24-hour), refreshed every 15 seconds. */
+/** The current time in `timeZone` as "h:MM AM/PM" (12-hour), refreshed every 15 seconds. */
 export function useLocalTime(timeZone: string) {
   const format = () =>
-    new Intl.DateTimeFormat("en-GB", {
-      hour: "2-digit",
+    new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
       minute: "2-digit",
-      hourCycle: "h23",
+      hour12: true,
       timeZone,
     }).format(new Date());
 
