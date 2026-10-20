@@ -5,15 +5,36 @@ import { Icon } from "../components/Icon";
 import { ProjectCard } from "../components/ProjectCard";
 import { Reveal } from "../components/Reveal";
 import { Container, headingClass, SectionHeading } from "../components/SectionHeading";
-import { profile, sortedProjects, type ProjectCategory } from "../data/content";
+import { profile, sortedProjects, type Project, type ProjectCategory } from "../data/content";
 
 const filters: { value: ProjectCategory | "all"; label: string }[] = [
   { value: "all", label: "All" },
   { value: "fullstack", label: "Full stack" },
+  { value: "frontend", label: "Frontend" },
   { value: "internal", label: "Internal tools" },
   { value: "backend", label: "Backend / API" },
   { value: "mobile", label: "Mobile" },
 ];
+
+/** Ids of cards that span both columns: wide projects, plus any card left alone in its row. */
+function fullWidthIds(list: Project[]) {
+  const ids = new Set<string>();
+  let run: Project[] = [];
+  const endRun = () => {
+    if (run.length % 2) ids.add(run[run.length - 1].id);
+    run = [];
+  };
+  for (const project of list) {
+    if (project.wide) {
+      endRun();
+      ids.add(project.id);
+    } else {
+      run.push(project);
+    }
+  }
+  endRun();
+  return ids;
+}
 
 const social = (label: string) => profile.socials.find((s) => s.label === label)?.href;
 
@@ -67,6 +88,7 @@ export function ProjectsPage() {
     value === "all" ? sortedProjects.length : sortedProjects.filter((p) => p.category === value).length;
   const visible =
     filter === "all" ? sortedProjects : sortedProjects.filter((p) => p.category === filter);
+  const fullWidth = fullWidthIds(visible);
   const github = social("GitHub");
 
   return (
@@ -116,13 +138,13 @@ export function ProjectsPage() {
               <motion.li
                 key={project.id}
                 layout
-                className={project.wide ? "lg:col-span-2" : ""}
+                className={fullWidth.has(project.id) ? "lg:col-span-2" : ""}
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.96 }}
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               >
-                <ProjectCard project={project} />
+                <ProjectCard project={{ ...project, wide: fullWidth.has(project.id) }} />
               </motion.li>
             ))}
           </AnimatePresence>

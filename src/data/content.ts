@@ -1,6 +1,6 @@
 // All site copy lives here — edit this file to update the portfolio.
 
-export type ProjectCategory = "fullstack" | "internal" | "backend" | "mobile";
+export type ProjectCategory = "fullstack" | "frontend" | "internal" | "backend" | "mobile";
 
 /** Drives the badge on a project's image. */
 export type ProjectStatus = "live" | "private" | "internal" | "source" | "retired";
@@ -87,6 +87,7 @@ export type Project =
 
 export const categoryLabels: Record<ProjectCategory, string> = {
   fullstack: "Full stack",
+  frontend: "Frontend",
   internal: "Internal tool",
   backend: "Backend",
   mobile: "Mobile",
@@ -95,6 +96,7 @@ export const categoryLabels: Record<ProjectCategory, string> = {
 /** Default "Type" on the project page when a project doesn't set one. */
 export const categoryTypes: Record<ProjectCategory, string> = {
   fullstack: "Full-stack web app",
+  frontend: "Website",
   internal: "Internal web tool",
   backend: "Backend API",
   mobile: "Mobile app",
@@ -328,7 +330,7 @@ export const projects: Project[] = [
   },
   {
     id: "creatve",
-    sort: 3,
+    sort: 4,
     title: "CreatVe",
     category: "fullstack",
     tagline: "Social",
@@ -346,7 +348,7 @@ export const projects: Project[] = [
   },
   {
     id: "docustream",
-    sort: 4,
+    sort: 5,
     title: "DocuStream",
     category: "internal",
     tagline: "Docs",
@@ -367,7 +369,7 @@ export const projects: Project[] = [
   },
   {
     id: "telemedicine",
-    sort: 6,
+    sort: 7,
     title: "TeleMedicine",
     category: "fullstack",
     tagline: "Health",
@@ -389,7 +391,7 @@ export const projects: Project[] = [
   },
   {
     id: "lms",
-    sort: 7,
+    sort: 8,
     title: "Learning Management System",
     category: "fullstack",
     tagline: "Education",
@@ -425,8 +427,74 @@ export const projects: Project[] = [
     links: { demo: null, source: null },
   },
   {
+    id: "yume",
+    sort: 3,
+    title: "Yume",
+    category: "frontend",
+    tagline: "Photography",
+    type: "Client website",
+    summary:
+      "A cinematic portfolio for a photo and film studio — debuts, prenups, weddings and celebrations, told in chapters.",
+    description:
+      "A portfolio website commissioned by Yume, a photo and film studio in Zamboanga City. It opens on a playing reel, tells the studio's work in chapters — debuts, prenups, weddings and celebrations — and ends with a filterable archive of every event, their films and coverage packages.",
+    highlights: [
+      "A full-width video reel in the hero, with films that play in the page",
+      "Work told in four chapters — debuts, prenups, weddings and celebrations",
+      "A filterable archive of every event, with a photo preview for each",
+    ],
+    stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui"],
+    images: [
+      shot("yume", "hero", "Hero reel", {
+        description: "The site opens on the studio's reel — \"The days you'll want to live twice.\"",
+      }),
+      shot("yume", "debuts", "Debuts", {
+        description: "Each kind of event gets its own chapter, with an editorial photo layout.",
+      }),
+      shot("yume", "weddings", "Weddings", {
+        description: "Weddings told from the morning preparations to the last dance.",
+      }),
+      shot("yume", "archive", "Archive", {
+        description: "Every event in order, filterable by type, with a photo preview for each one.",
+      }),
+      shot("yume", "films", "Films", {
+        description: "Highlight films and same-day edits that play right in the page.",
+      }),
+      shot("yume", "coverage", "Coverage", {
+        description: "Coverage packages for photography, film, or both — with starting prices.",
+      }),
+    ],
+    features: {
+      heading: "A studio's work,\ntold like a film.",
+      items: [
+        {
+          title: "Chapters, not galleries",
+          description:
+            "Debuts, prenups, weddings and celebrations each get a chapter of their own — a short line about the occasion and an editorial spread of the day.",
+          image: shot("yume", "weddings", "Weddings"),
+        },
+        {
+          title: "Every event, in order",
+          description:
+            "An archive of every event the studio has covered, filterable by type, with a photo preview for each one and a link to the full albums.",
+          image: shot("yume", "archive", "Archive"),
+        },
+        {
+          title: "Press play",
+          description:
+            "A video reel up top and films further down — highlight films and same-day edits that visitors can watch without leaving the page.",
+          image: shot("yume", "films", "Films"),
+        },
+      ],
+    },
+    status: "live",
+    links: {
+      demo: "https://yume-photography.vercel.app",
+      source: "https://github.com/arzljames/yume",
+    },
+  },
+  {
     id: "yakapp",
-    sort: 5,
+    sort: 6,
     title: "YakApp",
     category: "mobile",
     tagline: "Full stack",
